@@ -1,0 +1,7 @@
+---
+Name: securefileroutes
+After: '#rootroutes'
+---
+Director:
+  rules:
+    'assets/$Action': 'SecureFileController'

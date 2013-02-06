@@ -7,15 +7,11 @@
  * @author Hamish Campbell <hn.campbell@gmail.com>
  * @copyright copyright (c) 2010, Hamish Campbell 
  */
-class SecureFileGroupPermissionDecorator extends DataObjectDecorator {
+class SecureFileGroupPermissionDecorator extends DataExtension {
 	
-	function extraStatics() {
-		return array(
-			'many_many' => array(
-				'GroupPermissions' => 'Group',
-			),
-		);
-	}
+	public static $many_many = array(
+		'GroupPermissions' => 'Group'
+	);
 	
 	/**
 	 * View permission check
@@ -61,7 +57,7 @@ class SecureFileGroupPermissionDecorator extends DataObjectDecorator {
  	 * @param FieldSet $fields
  	 * @return void
  	 */
-	public function updateCMSFields(FieldSet &$fields) {
+	public function updateCMSFields(FieldList $fields) {
 		
 		// Only modify folder objects with parent nodes
 		if(!($this->owner instanceof Folder) || !$this->owner->ID)
@@ -72,9 +68,13 @@ class SecureFileGroupPermissionDecorator extends DataObjectDecorator {
 			return;
 		
 		// Update Security Tab
-		$secureFilesTab = $fields->findOrMakeTab('Root.'._t('SecureFiles.SECUREFILETABNAME', 'Security'));
-		$secureFilesTab->push(new HeaderField(_t('SecureFiles.GROUPACCESSTITLE', 'Group Access')));
-		$secureFilesTab->push(new TreeMultiselectField('GroupPermissions', _t('SecureFiles.GROUPACCESSFIELD', 'Group Access Permissions')));	
+		$security = $fields->fieldByName('Security');
+		if (!$security) {
+			$security = ToggleCompositeField::create('Security', _t('SecureFiles.SECUREFILETABNAME', 'Security'), array())->setHeadingLevel(4);
+		}
+		
+		$security->push(new HeaderField(_t('SecureFiles.GROUPACCESSTITLE', 'Group Access')));
+		$security->push(new TreeMultiselectField('GroupPermissions', _t('SecureFiles.GROUPACCESSFIELD', 'Group Access Permissions')));	
 			
 		if($this->owner->InheritSecured()) {
 			$permissionGroups = $this->owner->InheritedGroupPermissions();
@@ -85,7 +85,7 @@ class SecureFileGroupPermissionDecorator extends DataObjectDecorator {
 			}
 			$InheritedGroupsField = new ReadonlyField("InheritedGroupPermissionsText", _t('SecureFiles.GROUPINHERITEDPERMS', 'Inherited Group Permissions'), $fieldText);
 			$InheritedGroupsField->addExtraClass('prependUnlock');
-			$secureFilesTab->push($InheritedGroupsField);
+			$security->push($InheritedGroupsField);
 		}
 	}
 }

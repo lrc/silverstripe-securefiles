@@ -8,7 +8,7 @@ Adds a variety of security controls to your SilverStripe file assets.
 
 ## Requirements
 
- *  SilverStripe 2.3,x, 2.4
+ *  SilverStripe 3.0.x
 
 ## Installation Instructions
 
