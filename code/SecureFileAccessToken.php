@@ -119,7 +119,6 @@ class SecureFileAccessToken extends DataObject {
 	}
 	
 	function getCMSFields() {
-		
 		$fields = new FieldList();
 		$fields->push($expiry_field = new DatetimeField('Expiry', 'Expiry'));
 		$expiry_field->getDateField()->setConfig('showcalendar', true);

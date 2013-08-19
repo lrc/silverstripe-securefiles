@@ -1,6 +1,6 @@
 ---
-Name: securefileroutes
-After: '#rootroutes'
+Name: securefilesroutes
+After: framework/routes#coreroutes
 ---
 Director:
   rules:
