@@ -137,6 +137,15 @@ class SecureFileController extends Controller implements PermissionProvider {
 		$file_path = Director::makeRelative($url);
 		$file = File::find($file_path);
 
+		// If no file is found, check if we are looking for a versioned file 
+		// (VersionedFiles module https://github.com/silverstripe-australia/silverstripe-versionedfiles)
+		if(!$file instanceof File && class_exists('FileVersion')){
+			$version = FileVersion::get()->filter('Filename', '/' . $file_path)->first();
+			if($version){
+				$file = $version->File();
+			}
+		}
+
 		if($file instanceof File) {
 			if ($file->canView()) {
 				$file->extend('onAccessGranted');
