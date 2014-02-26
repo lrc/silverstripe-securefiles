@@ -9,7 +9,6 @@
 define('MODULE_SECUREFILES_PATH', basename(dirname(__FILE__)));
 
 AssetAdmin::require_css(MODULE_SECUREFILES_PATH . '/css/SecureFiles.css');
-// -------------------------------
 
 /**
  * For large files or heavily trafficed sites use x-sendfile headers to by-pass
@@ -20,6 +19,6 @@ AssetAdmin::require_css(MODULE_SECUREFILES_PATH . '/css/SecureFiles.css');
 
 /**
  * For testing or debug purposes, you can force this module to use the internal
- * Sapphire send file method. Not recommended for production sites.
+ * frmaework send file method. Not recommended for production sites.
  */
 // SecureFileController::use_ss_sendfile_method();
